@@ -1,73 +1,212 @@
-# TataConnect — Verified Housekeeper & Nanny Platform
+# TataConnect — Verified Caregiver Platform
 
-A web-based job-matching platform connecting verified housekeepers and nannies with families in Cameroon.
+A full-stack web application connecting verified housekeepers and nannies with families in Cameroon, built with React, TypeScript, Express, and modern cloud integrations.
 
-## Project Structure
-
-```
-tataconnect/
-├── index.html          ← Main application file
-├── css/
-│   └── style.css       ← All styles
-├── js/
-│   └── app.js          ← All interactivity
-└── README.md
-```
-
-## How to Run
-
-Simply open `index.html` in any modern web browser - no server or installation required.
-
-> Double-click `index.html` → opens in Chrome, Firefox, Edge, or Safari
-
-## Features
-
-| Page | Description |
-|------|-------------|
-| Dashboard | KPI stats, recent workers, activity feed, city chart |
-| Browse Workers | Search & filter workers by city, role, rating |
-| Job Postings | Tabbed job listings with status management |
-| Worker Profile | Full profile with skills, history, reviews |
-| Verifications | Admin panel to approve/reject worker documents |
-| Reports | Platform analytics and insights |
-
-## Key Interactions
-
-- **Sidebar navigation** — click any item to switch pages
-- **Post Job button** — opens a modal form to create a job listing
-- **Approve / Reject** — live verification queue updates
-- **Search & Filter** — filter workers by name, city, or role in real time
-- **Responsive** — works on mobile; hamburger menu on small screens
-
-## Technology Stack
+##  Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
-| Frontend | HTML5, CSS3, Vanilla JavaScript |
-| Fonts | Sora (headings), DM Sans (body) via Google Fonts |
-| Icons | Unicode symbols (no external icon library) |
-| Framework | None — pure HTML/CSS/JS, no build step required |
+| **Frontend** | React 19 + TypeScript + Vite + React Router |
+| **Backend** | Express.js (Node.js) + TypeScript |
+| **Database** | Supabase (PostgreSQL) + Prisma ORM |
+| **Auth** | Supabase Authentication |
+| **Email** | Resend |
+| **Analytics** | PostHog |
+| **Error Monitoring** | Sentry |
+| **Caching** | Upstash Redis |
+| **Vector Search** | Pinecone |
+| **Deployment Ready** | Vercel (frontend) + Railway/Render (backend) |
 
-## Color Palette
+##  Project Structure
 
-| Name | Hex | Usage |
-|------|-----|-------|
-| Navy | `#1a2e4a` | Sidebar, hero background |
-| Teal | `#1D9E75` | Primary buttons, verified badges, accent |
-| Teal Light | `#E1F5EE` | Badge backgrounds, skill tags |
-| Gold | `#e8a820` | Star ratings, secondary highlights |
-| Red | `#e24b4a` | Notifications, error states |
+```
+tataconnect/
+├── src/                          # React frontend
+│   ├── components/               # Reusable UI components
+│   ├── context/                  # Auth context with Supabase
+│   ├── pages/                    # Main pages (Dashboard, Messaging, etc.)
+│   ├── services/                 # API & Supabase clients
+│   ├── main.tsx                  # Sentry & PostHog initialization
+│   └── index.css                 # Global styles
+│
+├── backend/                      # Express API
+│   ├── src/
+│   │   ├── routes/               # API endpoints (auth, caregivers, messaging, etc.)
+│   │   ├── services/             # Service modules (Pinecone, Upstash, PostHog)
+│   │   ├── server.ts             # Sentry initialization & app setup
+│   │   └── seed.ts               # Database seeding
+│   ├── prisma/
+│   │   └── schema.prisma         # Database schema
+│   └── .env.example              # Environment template
+│
+├── .env.example                  # Frontend environment template
+├── package.json                  # Frontend dependencies
+└── README.md
+```
 
-## Next Steps (for full implementation)
+##  Quick Start
 
-1. **Backend** — Django or Node.js REST API
-2. **Database** — PostgreSQL (users, workers, jobs, reviews)
-3. **Authentication** — JWT-based login system
-4. **Document Upload** — Cloud storage for ID verification
-5. **SMS Notifications** — Twilio or Africa's Talking API
-6. **Mobile App** — Flutter (Android-first for Cameroon)
-7. **Mobile Money** — MTN MoMo / Orange Money payment integration
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+- Git
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/Sheva-1/tataconnect.git
+cd tataconnect
+
+# Install frontend dependencies
+npm install
+
+# Install backend dependencies
+cd backend && npm install && cd ..
+```
+
+### Environment Setup
+
+Copy the example files and add your API keys:
+
+```bash
+# Frontend
+cp .env.example .env.local
+
+# Backend
+cp backend/.env.example backend/.env
+```
+
+Fill in the required environment variables:
+
+**Frontend (.env.local):**
+```env
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+VITE_SENTRY_DSN=your-sentry-dsn
+VITE_POSTHOG_KEY=your-posthog-key
+VITE_POSTHOG_HOST=https://app.posthog.com
+```
+
+**Backend (.env):**
+```env
+PORT=4000
+DATABASE_URL="file:./prisma/dev.db"
+SENTRY_DSN=your-sentry-dsn
+RESEND_API_KEY=your-resend-api-key
+POSTHOG_API_KEY=your-posthog-api-key
+UPSTASH_REDIS_REST_URL=your-upstash-url
+UPSTASH_REDIS_REST_TOKEN=your-upstash-token
+PINECONE_API_KEY=your-pinecone-key
+```
+
+### Development
+
+**Terminal 1: Frontend**
+```bash
+npm run dev
+```
+Runs at `http://localhost:5173`
+
+**Terminal 2: Backend**
+```bash
+cd backend && npm run dev
+```
+Runs at `http://localhost:4000`
+
+### Build
+
+```bash
+# Frontend
+npm run build
+
+# Backend
+cd backend && npm run build
+```
+
+##  Key Features
+
+### Core Functionality
+-  **User Authentication** — Signup/Login with Supabase
+-  **Caregiver Search** — Browse and filter verified caregivers
+-  **Messaging** — Real-time messaging between families and caregivers
+-  **Bookings** — Schedule and manage caregiver bookings
+-  **Admin Dashboard** — Verify caregiver documents
+
+### Integrated Services
+-  **Email** — Welcome emails via Resend on signup
+-  **Analytics** — Track user behavior with PostHog
+-  **Error Tracking** — Capture errors with Sentry
+-  **Caching** — Session & data caching with Upstash Redis
+-  **Vector Search** — Semantic search for caregivers via Pinecone
+
+##  API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/sign-up` | Create new user account |
+| POST | `/api/auth/login` | Login with email/password |
+| GET | `/api/caregivers` | List verified caregivers |
+| GET | `/api/caregivers/:userId` | Get caregiver profile |
+| POST | `/api/messages/conversation` | Create conversation |
+| GET | `/api/messages/conversations` | Get user conversations |
+| POST | `/api/bookings` | Create booking |
+| GET | `/api/admin/verification/pending` | Get pending verifications |
+
+##  Database
+
+**Local Development (SQLite):**
+```bash
+# Run Prisma migrations
+cd backend && npx prisma db push
+
+# Seed sample data
+npm run seed
+```
+
+**Production (Supabase PostgreSQL):**
+Update `DATABASE_URL` in `.env` to your Supabase connection string.
+
+##  Monitoring & Analytics
+
+- **Sentry** — Error tracking for frontend & backend
+- **PostHog** — User analytics and event tracking
+- **Upstash** — Redis operations for caching
+- **Pinecone** — Vector database queries for semantic search
+
+##  Deployment
+
+### Frontend (Vercel)
+```bash
+npm install -g vercel
+vercel
+```
+
+### Backend (Railway/Render)
+1. Connect GitHub repository
+2. Set environment variables
+3. Deploy from `backend/` directory
+
+##  Environment Variables Reference
+
+See `.env.example` and `backend/.env.example` for complete list of required variables.
+
+##  Contributing
+
+1. Create a feature branch (`git checkout -b feature/your-feature`)
+2. Commit changes (`git commit -am 'Add your feature'`)
+3. Push to branch (`git push origin feature/your-feature`)
+4. Open a Pull Request
+
+##  License
+
+ISC
+
+##  Author
+
+TataConnect Development Team — Cameroon, 2026
 
 ---
 
-Built for the TataConnect capstone project — Cameroon, 2025.
+**Ready to get started?** Check out the [QUICKSTART.md](./QUICKSTART.md) guide for step-by-step setup instructions.
+# tataconnect_1
